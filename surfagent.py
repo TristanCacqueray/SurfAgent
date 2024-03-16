@@ -6,17 +6,23 @@
 import time, traceback
 from urllib.parse import urlparse, parse_qs
 
+from marionette_driver import By
 from marionette_driver.marionette import Marionette
 
 def save_infos(infos):
     with open("playlist.md", "a") as of:
-        of.write(f"| DATE | AUTHOR | {infos['title']} <!-- YT:{infos['vid']} --> |\n")
+        of.write(f"| DATE | {infos['author']} | {infos['title']} <!-- YT:{infos['vid']} --> |\n")
         print(f"Updated playlist.md with {infos}")
 
 def process_yt(client, url):
-    title = client.title
+    desc = client.find_element(By.CLASS_NAME, "ytd-watch-metadata").text.split('\n')[0]
+    try:
+        author, title = desc.split("-", 1)
+    except:
+        author = ""
+        title = desc
     vid = parse_qs(urlparse(url).query)["v"][0]
-    return dict(title=title, vid=vid)
+    return dict(title=title.strip(), author=author.strip(), vid=vid)
 
 def process(client, url):
     print(f"[+] Processing {url}")
