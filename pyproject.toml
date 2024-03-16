@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "surfagent"
+version = "0.1.0"
+description = ""
+authors = ["Tristan Cacqueray <tdecacqu@redhat.com>"]
+license = "APACHE-2.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+marionette_driver = "^3.4.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

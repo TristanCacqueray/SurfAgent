@@ -9,31 +9,7 @@
         localSystem = "x86_64-linux";
         config.allowUnfree = true;
       };
-
-      # The haskell package set override
-      haskellExtend = hpFinal: hpPrev: {
-        SurfAgent =
-          hpPrev.callCabal2nix "SurfAgent" self { };
-      };
-      hsPkgs = pkgs.haskellPackages.extend haskellExtend;
-
-      ciTools = [
-        pkgs.cabal-install
-        pkgs.haskellPackages.fourmolu
-        pkgs.hlint
-      ];
-      devTools = [
-        pkgs.haskell-language-server
-        pkgs.ghcid
-        pkgs.haskellPackages.cabal-fmt
-        pkgs.just
-      ];
     in {
-      devShell.x86_64-linux = hsPkgs.shellFor {
-        packages = p: [
-          p.SurfAgent
-        ];
-        buildInputs = ciTools ++ devTools;
-      };
+      devShell.x86_64-linux = pkgs.mkShell { buildInputs = [ pkgs.poetry ]; };
     };
 }
